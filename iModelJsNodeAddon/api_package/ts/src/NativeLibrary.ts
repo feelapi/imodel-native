@@ -94,6 +94,10 @@ export class NativeLibrary {
     }
     return this._nativeLib;
   }
+  public static version() {
+    const { version } = require(`./${NativeLibrary.archName}/package.json`); // eslint-disable-line @typescript-eslint/no-var-requires
+    return version as string;
+  }
 }
 
 /** Possible outcomes of generateElementGraphics.
