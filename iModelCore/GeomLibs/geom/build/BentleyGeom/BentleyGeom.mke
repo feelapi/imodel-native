@@ -35,14 +35,16 @@ nameToDefine = MinimalRefMethods
 %endif
 
 %ifdef GEOMLIBS_ENABLE_ITERATOR_WARNINGS
-CCompOpts + -we4238 
+CCompOpts + -we4238
 %endif
 
 # This was recently introduced to clang.
 # Ignore unused but set variables for GeomLibs. Other compilers (gcc) already are ignoring this warning
-IsClang13_0_0_OrGreater = $[@readstdout "$(BBPYTHONCMD) $(SrcRoot)bsicommon/build/DetectClangVersion.py 1300.0.00.0"]
-%if $(IsClang13_0_0_OrGreater) == "YES"
-    LLVMCommonCompOpts + -Wno-unused-but-set-variable
+%if $(BUILD_TOOLSET) == "APPLE_CLANG" || $(BUILD_TOOLSET) == "LINUX_CLANG"
+    IsClang13_0_0_OrGreater = $[@readstdout "$(BBPYTHONCMD) $(SrcRoot)bsicommon/build/DetectClangVersion.py 1300.0.00.0"]
+    %if $(IsClang13_0_0_OrGreater) == "YES"
+        LLVMCommonCompOpts + -Wno-unused-but-set-variable
+    %endif
 %endif
 
 #--------------------------------------------------------------------------------
